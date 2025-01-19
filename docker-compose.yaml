@@ -1,0 +1,27 @@
+services:
+  users:
+    build:
+      context: .
+      dockerfile: ./apps/users/Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/micro
+    networks:
+      - bridge_network
+
+  mongo:
+    image: mongo:7.0.0
+    volumes:
+      - db:/data/db
+      - config:/data/configdb
+    networks:
+      - bridge_network
+
+volumes:
+  db:
+  config:
+
+networks:
+  bridge_network:
+    driver: bridge
