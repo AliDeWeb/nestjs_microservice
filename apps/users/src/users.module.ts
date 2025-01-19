@@ -3,9 +3,20 @@ import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { DbModule } from '@app/common';
 import { User, UserSchema } from './entity/user.entity';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            singleLine: true,
+          },
+        },
+      },
+    }),
     DbModule,
     DbModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
